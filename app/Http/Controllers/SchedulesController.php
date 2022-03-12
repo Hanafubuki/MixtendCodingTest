@@ -24,7 +24,8 @@ class SchedulesController extends Controller
     }
 
     private function log($data){
-        Log::info(request()->ip());
-        Log::info(print_r($data, true));
+        $log = ['IP' => request()->ip(), 'User Agent' => request()->header('User-Agent')];
+        $log[] = $data;
+        Log::info(print_r($log, true));
     }
 }
