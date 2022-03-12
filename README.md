@@ -9,6 +9,7 @@
 
 ## Introduction
 Cloud-based backend service that emulates a simple event calendar service. 
+https://mixtend.atlassian.net/wiki/spaces/MERT/pages/1245675547
 
 
 ## Technologies
@@ -22,13 +23,16 @@ Cloud-based backend service that emulates a simple event calendar service.
 To run this project:
 1. Clone this project.
 2. cd MixtendCodingTest
-3. composer run-script first-initialization
-5. Rename .env.example to .env
-6. docker-compose build
-7. docker-compose up
-8. docker-compose exec mixtend php artisan migrate
-9. docker-compose exec mixtend php artisan db:seed
-10. Access localhost:8000
+3. composer install
+4. npm install 
+5. npm run production
+6. Rename .env.example to .env
+7. php artisan key:generate
+8. docker-compose build
+9. docker-compose up
+10. docker-compose exec mixtend php artisan migrate
+11. docker-compose exec mixtend php artisan db:seed
+12. Access localhost:8000
 
 ## APIs
 Check below the list of endpoints:

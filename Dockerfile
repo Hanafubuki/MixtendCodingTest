@@ -10,7 +10,6 @@ WORKDIR /app
 COPY . .
 
 ##Prepare environment
-RUN php artisan key:generate
 RUN php artisan optimize
 
 ## Initialize server
