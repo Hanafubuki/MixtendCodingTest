@@ -9,16 +9,9 @@ WORKDIR /app
 
 COPY . .
 
-##Install requirements
-RUN composer install
-RUN npm install
-
 ##Prepare environment
-COPY .env.example .env
 RUN php artisan key:generate
 RUN php artisan optimize
-RUN php artisan migrate
-RUN php artisan db:seed
 
 ## Initialize server
 CMD php artisan serve --host=0.0.0.0 

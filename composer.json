@@ -58,5 +58,10 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "first-initialization": [
+        "@composer install",
+        "npm install && npm run dev",
+        "@php artisan key:generate"
+    ]
 }
