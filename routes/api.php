@@ -13,7 +13,23 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::namespace('App\Http\Controllers')->group(function () {
+    Route::get('schedule', 'SchedulesController@get');
+       
+    Route::resource('working_hours', 'WorkingHoursController')->missing(function(){
+        return response(['message' => 'Working Hours not found'], 404);
+    })->except(['index, show, create, edit']);
+    Route::get('working_hours/{working_hour}', 'WorkingHoursController@getOne')->missing(function(){
+        return response(['message' => 'Working Hours not found'], 404);
+    });
+    Route::get('working_hours', 'WorkingHoursController@getAll'); 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    
+    Route::resource('meetings', 'MeetingsController')->missing(function(){
+        return response(['message' => 'Meeting not found'], 404);
+    })->except(['index, show, create, edit']);
+    Route::get('meetings/{meeting}', 'MeetingsController@getOne')->missing(function(){
+        return response(['message' => 'Meeting not found'], 404);
+    });
+    Route::get('meetings', 'MeetingsController@getAll');
 });

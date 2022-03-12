@@ -1,19 +1,10 @@
 <template>
-    <div class="container mt-3">
+    <div class="container content mt-3">
         <Header />
         <div v-if="error">データが表示できません。</div>
         <div class="d-flex justify-content-center w-100 mt-2" v-else>
-            <div class="">
-                <ul>
-                    <li class="dates"></li>
-                    <li class="time"
-                        v-for="hour in working_hours"
-                        :key="hour"
-                    >{{ hour }}
-                    </li>
-                </ul>
-            </div>
-            <EventDayItem
+            <TimeColumn :working_hours="working_hours" />
+            <DayColumns
                 :meetings="events.meetings"
                 :working_hours="working_hours"
             />
@@ -23,64 +14,38 @@
 
 <script>
 Vue.component('Header', require('./components/Header.vue').default);
-Vue.component('EventDayItem', require('./components/EventDayItem.vue').default);
+Vue.component('TimeColumn', require('./components/TimeColumn.vue').default);
+Vue.component('DayColumns', require('./components/DayColumns.vue').default);
 export default {
     data() {
         return{
             working_hours: [],
-            error: '',
-            events: {
-                "working_hours":{
-                    "start": "10:00",
-                    "end": "19:00"
-                },
-                "meetings":{
-                    "2021-03-22":[
-                        {
-                            "summary":"Meeting 1",
-                            "start":"10:00",
-                            "end":"11:00",
-                            "timezone":"Asia/Tokyo"
-                        }
-                    ],
-                    "2021-03-23":[
-                        {
-                            "summary":"Meeting 2",
-                            "start":"14:00",
-                            "end":"15:00",
-                            "timezone":"Asia/Tokyo"
-                        },
-                        {
-                            "summary":"Meeting 3",
-                            "start":"16:00",
-                            "end":"17:00",
-                            "timezone":"Asia/Tokyo"
-                        }
-                    ],
-                    "2021-03-24":[
-                        {
-                            "summary":"Meeting 4",
-                            "start":"10:30",
-                            "end":"12:10",
-                            "timezone":"Asia/Tokyo"
-                        }
-                    ]
-                }
-            },
+            error: false,
+            events: ''
         }
     },
     mounted(){
-        this.getWorkingHours()
+        this.getEvents()
     },
     methods:{
         getEvents(){
-            page_url = '/api/events';
-            fetch(page_url)
+            let page_url = '/api/schedule';
+            let headers = new Headers({
+                "Accept"       : "application/json",
+                "Content-Type" : "application/json",
+                "User-Agent"   : "Mixtend Coding Test"
+            });
+            fetch(page_url, {
+                method  : 'GET', 
+                headers : headers 
+            })
                 .then(res => res.json())
                 .then(res => {
-                    this.events = res.data
+                    this.events = res
+                    this.getWorkingHours()
                 })
                 .catch(err => {
+                    this.error=true;
                     console.log(err);
                 });
         },
@@ -98,29 +63,37 @@ export default {
 </script>
 
 <style>
-*{
-    font-size: 22px;
-}
-ul{
-    padding: 0 !important;
-}
-li{
-    list-style-type: none; 
-    height: 100px;
-}
-.dates{
-    height: 70px;
-    border-top: 2px solid rgb(167, 167, 167);
-    border-bottom: 2px solid rgb(167, 167, 167);
-    border-left: 2px solid rgb(167, 167, 167);
-    widows: 170px;
-}
-.time{    
-    border-bottom: 2px solid rgb(167, 167, 167);
-    border-right: 2px solid rgb(167, 167, 167);
-    border-left: 2px solid rgb(167, 167, 167);
-    width: 170px;
-    text-align: center;
-}
+    *{
+        font-size: 22px;
+        color: #424242;
+    }
+    ul{
+        padding: 0 !important;
+    }
+    li{
+        list-style-type: none; 
+        height: 100px;
+    }
+    .content{
+        max-width: 1140px;
+    }
+    .dates{
+        height: 70px;
+        border-top: 2px solid rgb(204, 204, 204);
+        border-bottom: 2px solid rgb(204, 204, 204);
+        border-right: 2px solid rgb(204, 204, 204);
+        widows: 170px;
+        text-align: center;
+    }
+    .time{    
+        border-bottom: 2px solid rgb(204, 204, 204);
+        border-right: 2px solid rgb(204, 204, 204);
+        border-left: 2px solid rgb(204, 204, 204);
+        width: 190px;
+        text-align: center;
+    }
+    .border-left{
+        border-left: 2px solid rgb(204, 204, 204);
+    }
 
 </style>
