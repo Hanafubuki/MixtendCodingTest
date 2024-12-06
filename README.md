@@ -9,7 +9,6 @@
 
 ## Introduction
 Cloud-based backend service that emulates a simple event calendar service. 
-https://mixtend.atlassian.net/wiki/spaces/MERT/pages/1245675547
 
 
 ## Technologies
